@@ -1,0 +1,6 @@
+FROM jenkins/jenkins:lts-jdk17
+
+# Installation des plugins
+RUN jenkins-plugin-cli --plugins prometheus metrics:latest
+
+USER jenkins

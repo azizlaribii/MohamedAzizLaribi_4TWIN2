@@ -1,0 +1,60 @@
+# Configuration pour le monitoring avec Spring Boot Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Expose tous les endpoints (health, metrics, prometheus, etc.)
+      base-path: /actuator
+      path-mapping:
+        prometheus: prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 30s  # Fréquence d'export des métriques
+      # Activer différentes catégories de métriques
+      jvm:
+        enabled: true
+      system:
+        enabled: true
+      logback:
+        enabled: true
+      processor:
+        enabled: true
+    tags:
+      application: student-management
+      environment: development
+      version: 0.0.1
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+  # Configuration des endpoints spécifiques
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+      probes:
+        enabled: true
+    metrics:
+      enabled: true
+    info:
+      enabled: true
+
+  # Tracing (optionnel)
+  tracing:
+    sampling:
+      probability: 1.0
+
+# IMPORTANT: Match your deployment configuration
+server:
+  port: 8089
+  servlet:
+    context-path: /student
+
+# Logging pour le monitoring
+logging:
+  level:
+    io.micrometer: DEBUG
+    org.springframework.boot.actuate: INFO
